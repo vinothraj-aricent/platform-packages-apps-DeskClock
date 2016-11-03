@@ -22,6 +22,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import com.android.deskclock.data.DataModel;
 
 import com.android.deskclock.R;
 
@@ -58,7 +59,14 @@ public final class ScreensaverSettingsActivity extends AppCompatActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
+            final DataModel.ClockStyle clockStyle = DataModel.getDataModel().getScreensaverClockStyle();
             addPreferencesFromResource(R.xml.dream_settings);
+
+            final ListPreference clockStylePref = (ListPreference) findPreference(KEY_CLOCK_STYLE);
+            clockStylePref.setValue((String)clockStylePref.getEntryValues()[clockStyle.ordinal()]);
+            clockStylePref.setSummary(clockStylePref.getEntries()[clockStyle.ordinal()]);
+            clockStylePref.setOnPreferenceChangeListener(this);
         }
 
         @Override

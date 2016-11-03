@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.content.SharedPreferences;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -109,7 +110,15 @@ public final class SettingsActivity extends BaseActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
+            final DataModel.ClockStyle clockStyle = DataModel.getDataModel().getClockStyle();
+
             addPreferencesFromResource(R.xml.settings);
+
+            final ListPreference clockStylePref = (ListPreference) findPreference(KEY_CLOCK_STYLE);
+            clockStylePref.setValue((String)clockStylePref.getEntryValues()[clockStyle.ordinal()]);
+            clockStylePref.setSummary(clockStylePref.getEntries()[clockStyle.ordinal()]);
+            clockStylePref.setOnPreferenceChangeListener(this);
+
             loadTimeZoneList();
         }
 

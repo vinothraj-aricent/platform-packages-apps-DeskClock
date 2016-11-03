@@ -148,10 +148,6 @@ final class SettingsDAO {
     }
 
     private static SharedPreferences getSharedPreferences(Context context) {
-        if (sPrefs == null) {
-            sPrefs = Utils.getDefaultSharedPreferences(context.getApplicationContext());
-        }
-
-        return sPrefs;
+        return Utils.getDefaultSharedPreferences(context.getApplicationContext());
     }
 }
