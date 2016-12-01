@@ -16,18 +16,20 @@
 
 package com.android.deskclock.settings;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import com.android.deskclock.data.DataModel;
 
 import com.android.deskclock.R;
+import com.android.deskclock.Utils;
 
 /**
- * Settings for Clock Daydream
+ * Settings for Clock screen saver
  */
 public final class ScreensaverSettingsActivity extends AppCompatActivity {
 
@@ -57,16 +59,14 @@ public final class ScreensaverSettingsActivity extends AppCompatActivity {
             implements Preference.OnPreferenceChangeListener {
 
         @Override
+        @TargetApi(Build.VERSION_CODES.N)
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            final DataModel.ClockStyle clockStyle = DataModel.getDataModel().getScreensaverClockStyle();
-            addPreferencesFromResource(R.xml.dream_settings);
-
-            final ListPreference clockStylePref = (ListPreference) findPreference(KEY_CLOCK_STYLE);
-            clockStylePref.setValue((String)clockStylePref.getEntryValues()[clockStyle.ordinal()]);
-            clockStylePref.setSummary(clockStylePref.getEntries()[clockStyle.ordinal()]);
-            clockStylePref.setOnPreferenceChangeListener(this);
+            if (Utils.isNOrLater()) {
+                getPreferenceManager().setStorageDeviceProtected();
+            }
+            addPreferencesFromResource(R.xml.screensaver_settings);
         }
 
         @Override
